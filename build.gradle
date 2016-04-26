@@ -1,0 +1,80 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+version = buildVersion
+group = 'uk.me.eddies'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.hamcrest:hamcrest-all:1.3'
+}
+
+
+tasks.withType(Test) {
+	ignoreFailures = true;
+}
+
+test {
+	filter {
+		includeTestsMatching "*Test"
+	}
+}
+
+task integrationTest(type: Test) {
+	filter {
+		includeTestsMatching "*IT"
+	}
+	reports.junitXml.destination = "$buildDir/integration-test-results"
+}
+
+task testJar(type: Jar) {
+	classifier = 'test'
+	from sourceSets.test.output
+}
+
+task setBuildProperties << {
+	def props = new Properties()
+	props.put('uk.me.eddies.apps.jenkinsindicator.version', version)
+	def writer = new FileWriter(file('src/main/resources/uk/me/eddies/apps/jenkinsindicator/build.properties'))
+	try {
+		props.store(writer, 'Generated build properties')
+		writer.flush()
+	} finally {
+		writer.close()
+	}
+}
+
+setBuildProperties {
+	outputs.file 'src/main/resources/uk/me/eddies/apps/jenkinsindicator/build.properties'
+}
+
+processResources {
+	dependsOn setBuildProperties
+}
+
+artifacts {
+  archives testJar
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+	repositories {
+		maven {
+			url "https://jenkins.eddies.me.uk/archiva/repository/internal/"
+			credentials {
+				username archivaUsername
+				password archivaPassword
+			}
+		}
+	}
+}

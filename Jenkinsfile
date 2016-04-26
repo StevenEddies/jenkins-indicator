@@ -55,7 +55,7 @@ void scmTag() {
 	withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '250caf7a-0e9e-4e44-b8ba-a91544ca8f85', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
 		sh 'set +x'
 		sh "git tag -a v${version} -m \"Jenkins build published\""
-	    sh 'git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/StevenEddies/gradle-test-project.git --tags'
+	    sh 'git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/StevenEddies/jenkins-indicator.git --tags'
 	}
 }
 

@@ -4,6 +4,7 @@ apply plugin: 'maven-publish'
 
 version = buildVersion
 group = 'uk.me.eddies'
+name = 'jenkins-indicator'
 
 repositories {
     jcenter()

@@ -3,13 +3,12 @@
 package uk.me.eddies.apps.jenkinsindicator.model;
 
 /**
- * Represents the possible statuses of a {@link Job}.
+ * Represents the possible statuses of a {@link Build}.
  */
-public enum JobStatus {
-
+public enum BuildStatus {
+	
+	FAILED,
 	STABLE,
 	UNSTABLE,
-	FAILED,
-	NOT_BUILT,
-	UNKNOWN;
+	NOT_BUILT;
 }

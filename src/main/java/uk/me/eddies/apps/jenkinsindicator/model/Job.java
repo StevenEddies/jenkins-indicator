@@ -8,16 +8,26 @@ package uk.me.eddies.apps.jenkinsindicator.model;
 public class Job {
 
 	private String name;
+	private Build lastBuild;
 	
 	public Job(String name) {
 		this.name = name;
+		this.lastBuild = new NoBuilds(this);
 	}
 	
 	public String getName() {
 		return name;
 	}
 	
-	public JobStatus getStatus() {
-		return JobStatus.UNKNOWN;
+	public Build getLastBuild() {
+		return lastBuild;
+	}
+
+	public void setLastBuild(Build lastBuild) {
+		this.lastBuild = lastBuild;
+	}
+
+	public BuildStatus getStatus() {
+		return lastBuild.getStatus();
 	}
 }

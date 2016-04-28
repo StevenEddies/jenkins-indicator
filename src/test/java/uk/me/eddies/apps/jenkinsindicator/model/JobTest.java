@@ -32,6 +32,11 @@ public class JobTest {
 		assertThat(systemUnderTest.getName(), is(TEST_NAME));
 	}
 	
+	@Test(expected=NullPointerException.class)
+	public void shouldFailWithNullName() {
+		systemUnderTest = new Job(null);
+	}
+	
 	@Test
 	public void shouldInitiallyHaveNotBuiltStatus() {
 		assertThat(systemUnderTest.getStatus(), is(BuildStatus.NOT_BUILT));
@@ -42,6 +47,11 @@ public class JobTest {
 		assertThat(systemUnderTest.getLastBuild(), not(sameInstance(build)));
 		systemUnderTest.setLastBuild(build);
 		assertThat(systemUnderTest.getLastBuild(), sameInstance(build));
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void shouldFailWithNullLastBuild() {
+		systemUnderTest.setLastBuild(null);
 	}
 	
 	@Test

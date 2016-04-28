@@ -7,8 +7,18 @@ package uk.me.eddies.apps.jenkinsindicator.model;
  */
 public enum BuildStatus {
 	
-	FAILED,
-	STABLE,
-	UNSTABLE,
-	NOT_BUILT;
+	FAILED(true),
+	STABLE(true),
+	UNSTABLE(true),
+	NOT_BUILT(false);
+	
+	private boolean validActualBuildStatus;
+	
+	private BuildStatus(boolean validActualBuildStatus) {
+		this.validActualBuildStatus = validActualBuildStatus;
+	}
+	
+	boolean isValidActualBuildStatus() {
+		return validActualBuildStatus;
+	}
 }

@@ -2,7 +2,7 @@
 
 package uk.me.eddies.apps.jenkinsindicator.model;
 
-import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 /**
  * Represents a single build of a {@link Job}.
@@ -13,7 +13,7 @@ public interface Build {
 	
 	public Long getNumber();
 	
-	public OffsetDateTime getStartTime();
+	public ZonedDateTime getStartTime();
 	
 	public BuildStatus getStatus();
 }

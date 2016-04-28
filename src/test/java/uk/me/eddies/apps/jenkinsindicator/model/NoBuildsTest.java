@@ -17,8 +17,7 @@ public class NoBuildsTest {
 	@Mock private Job job;
 	
 	private NoBuilds systemUnderTest;
-	
-	
+		
 	@Before
 	public void setUp() {
 		initMocks(this);
@@ -28,6 +27,11 @@ public class NoBuildsTest {
 	@Test
 	public void shouldStoreJob() {
 		assertThat(systemUnderTest.getJob(), sameInstance(job));
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void shouldFailWithNullJob() {
+		systemUnderTest = new NoBuilds(null);
 	}
 	
 	@Test

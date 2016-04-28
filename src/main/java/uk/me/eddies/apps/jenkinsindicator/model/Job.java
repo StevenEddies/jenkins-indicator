@@ -26,7 +26,7 @@ public class Job {
 		return lastBuild;
 	}
 
-	public void setLastBuild(Build lastBuild) {
+	void setLastBuild(Build lastBuild) {
 		requireNonNull(lastBuild);
 		this.lastBuild = lastBuild;
 	}

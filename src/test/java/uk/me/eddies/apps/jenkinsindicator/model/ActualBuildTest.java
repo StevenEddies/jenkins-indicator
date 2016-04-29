@@ -5,13 +5,15 @@ package uk.me.eddies.apps.jenkinsindicator.model;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assume.assumeThat;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -75,17 +77,29 @@ public class ActualBuildTest {
 		systemUnderTest = new ActualBuild(job, BUILD_NUMBER, START_TIME, null);
 	}
 	
-	@Test
-	@Parameters(source=BuildStatus.class)
+	public Collection<Object[]> parametersForShouldFailSettingInvalidStatus() {
+		return Arrays.stream(BuildStatus.values())
+				.filter(status -> !status.isValidActualBuildStatus())
+				.map(status -> new Object[] { status })
+				.collect(Collectors.toSet());
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	@Parameters
 	public void shouldFailSettingInvalidStatus(BuildStatus eachStatus) {
-		assumeThat(eachStatus.isValidActualBuildStatus(), is(false));
 		systemUnderTest = new ActualBuild(job, BUILD_NUMBER, START_TIME, eachStatus);
 	}
 	
+	public Collection<Object[]> parametersForShouldSucceedSettingValidStatus() {
+		return Arrays.stream(BuildStatus.values())
+				.filter(BuildStatus::isValidActualBuildStatus)
+				.map(status -> new Object[] { status })
+				.collect(Collectors.toSet());
+	}
+	
 	@Test
-	@Parameters(source=BuildStatus.class)
+	@Parameters
 	public void shouldSucceedSettingValidStatus(BuildStatus eachStatus) {
-		assumeThat(eachStatus.isValidActualBuildStatus(), is(true));
 		systemUnderTest = new ActualBuild(job, BUILD_NUMBER, START_TIME, eachStatus);
 	}
 }

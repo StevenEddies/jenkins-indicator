@@ -20,6 +20,7 @@ public class ActualBuild implements Build {
 		requireNonNull(job);
 		requireNonNull(startTime);
 		requireNonNull(status);
+		if (!status.isValidActualBuildStatus()) throw new IllegalArgumentException("Status not applicable for an ActualBuild.");
 		this.job = job;
 		this.number = number;
 		this.startTime = startTime;

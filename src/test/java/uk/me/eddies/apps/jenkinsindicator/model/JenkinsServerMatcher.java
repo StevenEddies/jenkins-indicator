@@ -2,8 +2,6 @@
 
 package uk.me.eddies.apps.jenkinsindicator.model;
 
-import java.util.Collection;
-
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
@@ -15,11 +13,11 @@ import uk.me.eddies.apps.jenkinsindicator.utility.TypedMatcher;
 public class JenkinsServerMatcher extends TypedMatcher<JenkinsServer> {
 	
 	private final Matcher<? super String> name;
-	private final Matcher<? super Collection<Job>> jobs;
+	private final Matcher<? super Iterable<Job>> jobs;
 	
 	public JenkinsServerMatcher(
 			Matcher<? super String> name,
-			Matcher<? super Collection<Job>> jobs
+			Matcher<? super Iterable<Job>> jobs
 	) {
 		super(JenkinsServer.class);
 		this.name = name;

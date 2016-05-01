@@ -1,0 +1,82 @@
+/* Copyright Steven Eddies, 2016. See the LICENCE file in the project root. */
+
+package uk.me.eddies.apps.jenkinsindicator.model;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * Integration test for the model as a whole.
+ */
+public class ModelIT {
+	
+	private static final String SERVER_NAME = "server";
+	private static final String JOB_1_NAME = "job1";
+	private static final String JOB_2_NAME = "job2";
+	private static final String JOB_3_NAME = "job3";
+	private static final String JOB_4_NAME = "job4";
+	private static final ZonedDateTime TIME_1 = fromBstTimestamp(10L);
+	private static final ZonedDateTime TIME_2 = fromBstTimestamp(21L);
+
+	private JenkinsServer server;
+	
+	@Before
+	public void setUp() {
+		server = new JenkinsServer(SERVER_NAME);
+		updateJobWithBuild(JOB_1_NAME, 56, TIME_1, BuildStatus.STABLE);
+		updateJobWithBuild(JOB_2_NAME, 42, TIME_2, BuildStatus.UNSTABLE);
+		updateJobNoBuild(JOB_3_NAME);
+	}
+	
+	@Test
+	public void shouldSetUpCorrectly() {
+		List<Matcher<? super Job>> jobs = Arrays.asList(
+				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), is(56), is(TIME_1), is(BuildStatus.STABLE))),
+				new JobMatcher(is(JOB_2_NAME), new BuildMatcher(is(JOB_2_NAME), is(42), is(TIME_2), is(BuildStatus.UNSTABLE))),
+				new JobMatcher(is(JOB_3_NAME), new BuildMatcher(is(JOB_3_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))));
+		assertThat(server, new JenkinsServerMatcher(is(SERVER_NAME), Matchers.<Job>contains(jobs)));
+	}
+	
+	private void updateJobNoBuild(String name) {
+		server.updateForNewJobInformation(name, null, createJob(name), createNoBuild());
+	}
+	
+	private void updateJobWithBuild(String name, long number, ZonedDateTime startTime, BuildStatus status) {
+		server.updateForNewJobInformation(name, number, createJob(name), createBuild(number, startTime, status));
+	}
+	
+	private void updateJobDeleted(String name) {
+		server.updateForDeletedJob(name);
+	}
+	
+	private Function<Job, Build> createNoBuild() {
+		return job -> new NoBuilds(job);
+	}
+	
+	private Function<Job, Build> createBuild(long number, ZonedDateTime startTime, BuildStatus status) {
+		return job -> new ActualBuild(job, number, startTime, status);
+	}
+	
+	private Supplier<Job> createJob(String name) {
+		return () -> new Job(name);
+	}
+	
+	private static ZonedDateTime fromBstTimestamp(long seconds) {
+		return ZonedDateTime.ofInstant(Instant.ofEpochSecond(seconds), ZoneId.ofOffset("GMT", ZoneOffset.ofHours(1)));
+	}
+}

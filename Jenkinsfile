@@ -12,10 +12,10 @@ node {
     step([$class: 'JUnitResultArchiver', testResults: '**/build/test-results/TEST-*.xml'])
 	if (testFailures()) return
 	
-//	stage 'Integration Test'
-//	runGradle('integrationTest')
-//	step([$class: 'JUnitResultArchiver', testResults: '**/build/integration-test-results/TEST-*.xml'])
-//	if (testFailures()) return
+	stage 'Integration Test'
+	runGradle('integrationTest')
+	step([$class: 'JUnitResultArchiver', testResults: '**/build/integration-test-results/TEST-*.xml'])
+	if (testFailures()) return
 	
 	stage 'Assemble'
 	runGradle('assemble')

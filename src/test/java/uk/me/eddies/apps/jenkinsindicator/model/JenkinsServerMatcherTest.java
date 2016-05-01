@@ -26,7 +26,7 @@ public class JenkinsServerMatcherTest {
 	@Mock private Collection<Job> jobs;
 	@Mock private JenkinsServer server;
 	@Mock private Matcher<String> nameMatcher;
-	@Mock private Matcher<Collection<Job>> jobsMatcher;
+	@Mock private Matcher<Iterable<Job>> jobsMatcher;
 	
 	private JenkinsServerMatcher systemUnderTest;
 	

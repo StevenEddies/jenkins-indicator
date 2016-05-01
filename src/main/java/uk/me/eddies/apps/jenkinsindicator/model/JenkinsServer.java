@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -40,7 +41,7 @@ public class JenkinsServer {
 	}
 	
 	public void updateForNewJobInformation(String jobName, Long buildNumber,
-			Supplier<Job> jobCreator, Supplier<Build> buildCreator) {
+			Supplier<Job> jobCreator, Function<Job, Build> buildCreator) {
 		requireNonNull(buildCreator);
 		synchronized (jobs) {
 			Job job = addOrGetJob(jobName, jobCreator);

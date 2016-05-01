@@ -8,7 +8,7 @@ import static uk.me.eddies.apps.jenkinsindicator.utility.ComparatorResult.LESS_T
 import static uk.me.eddies.apps.jenkinsindicator.utility.ComparatorResult.compare;
 
 import java.util.Objects;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import uk.me.eddies.apps.jenkinsindicator.utility.ComparatorResult;
 
@@ -42,14 +42,14 @@ public class Job {
 		return lastBuild.getStatus();
 	}
 
-	boolean updateBuildIfLater(Long buildNumber, Supplier<Build> buildCreator) {
+	boolean updateBuildIfLater(Long buildNumber, Function<Job, Build> buildCreator) {
 		
 		requireNonNull(buildCreator);
 		ComparatorResult newBuildToCurrent = compare(buildNumber, getLastBuild().getNumber(), new BuildNumberComparator());
 		if (newBuildToCurrent == EQUALS) return false;
 		if (newBuildToCurrent == LESS_THAN) throw new IllegalStateException("Build number jumps backwards.");
 		
-		Build build = buildCreator.get();
+		Build build = buildCreator.apply(this);
 		if (!Objects.equals(build.getNumber(), buildNumber)) throw new IllegalStateException("Wrong Build supplied.");
 		setLastBuild(build);
 		return true;

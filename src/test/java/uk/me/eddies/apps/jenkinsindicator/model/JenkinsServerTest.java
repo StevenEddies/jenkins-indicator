@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.util.Arrays;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class JenkinsServerTest {
 	
 	@Mock private Job job1;
 	@Mock private Job job2;
-	@Mock private Supplier<Build> buildCreator;
+	@Mock private Function<Job, Build> buildCreator;
 
 	private JenkinsServer systemUnderTest;
 	

@@ -12,52 +12,50 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Proof-of-concept integration test to demonstrate retrieval of data from a Jenkins
- * API over HTTPS.
+ * Integration test to prove overall operation of the {@link HttpQueue}.
  */
-public class HttpsRequestProofOfConceptIT {
+public class HttpQueueIT {
 
 	private static final URI HTTPS_API = URI.create("https://jenkins.eddies.me.uk/job/jenkins-indicator/api/xml");
 	private static final URI HTTP_API = URI.create("http://jenkins.eddies.me.uk/job/jenkins-indicator/api/xml");
 	private static final int STATUS_OK = 200;
 	private static final String XML_CONTENT_TYPE = "application/xml";
 	
-	private CloseableHttpClient client;
+	private HttpQueue queue;
 	
 	@Before
 	public void setUp() {
-		client = HttpClients.createDefault();
+		queue = new HttpQueue(HttpAsyncClients.createDefault());
+		queue.start();
 	}
 	
 	@Test
-	public void shouldRequestHttpsApi() throws ClientProtocolException, IOException {
-		try (CloseableHttpResponse response = client.execute(new HttpGet(HTTPS_API))) {
-			assertThat(response.getStatusLine().getStatusCode(), is(STATUS_OK));
-			assertContainsXmlContent(response.getEntity());
-		}
+	public void shouldRequestApi() throws IOException, InterruptedException {
+		queue.putRequest(new HttpGet(HTTPS_API));
+		HttpResponse response = queue.takeResponse();
+		assertThat(response.getStatusLine().getStatusCode(), is(STATUS_OK));
+		assertContainsXmlContent(response.getEntity());
 	}
 	
 	@Test
-	public void shouldResolveRedirects() throws ClientProtocolException, IOException {
-		try (CloseableHttpResponse response = client.execute(new HttpGet(HTTP_API))) {
-			assertThat(response.getStatusLine().getStatusCode(), is(STATUS_OK));
-			assertContainsXmlContent(response.getEntity());
-		}
+	public void shouldResolveRedirects() throws IOException, InterruptedException {
+		queue.putRequest(new HttpGet(HTTP_API));
+		HttpResponse response = queue.takeResponse();
+		assertThat(response.getStatusLine().getStatusCode(), is(STATUS_OK));
+		assertContainsXmlContent(response.getEntity());
 	}
 	
 	@After
 	public void cleanUp() throws IOException {
-		client.close();
+		queue.stop();
 	}
 	
 	private void assertContainsXmlContent(HttpEntity entity) throws IOException {

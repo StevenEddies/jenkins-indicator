@@ -9,12 +9,12 @@ node {
 	
 	stage 'Unit Test'
 	runGradle('test')
-    step([$class: 'JUnitResultArchiver', testResults: '**/build/test-results/TEST-*.xml'])
+    step([$class: 'JUnitResultArchiver', testResults: '**/build/reports/unit-test/TEST-*.xml'])
 	if (testFailures()) return
 	
 //	stage 'Integration Test'
 //	runGradle('integrationTest')
-//	step([$class: 'JUnitResultArchiver', testResults: '**/build/integration-test-results/TEST-*.xml'])
+//	step([$class: 'JUnitResultArchiver', testResults: '**/build/reports/integration-test/TEST-*.xml'])
 //	if (testFailures()) return
 	
 	stage 'Assemble'
@@ -25,6 +25,9 @@ node {
 		runGradle('publish')
 		scmTag()
 	}
+	
+	stage 'Metrics'
+	runGradle('pitest')
 }
 
 void computeVersion() {

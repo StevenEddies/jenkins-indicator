@@ -62,6 +62,11 @@ task setBuildProperties << {
 	}
 }
 
+pitest {
+	threads = 1
+	outputFormats = ['XML', 'HTML']
+}
+
 setBuildProperties {
 	outputs.file 'src/main/resources/uk/me/eddies/apps/jenkinsindicator/build.properties'
 }

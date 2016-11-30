@@ -28,7 +28,7 @@ node {
 	
 	stage 'Metrics'
 	runGradle('pitest')
-	step([$class: 'PitPublisher', mutationStatsFile: '**/build/reports/pitest/**/mutations.xml'])
+	step([$class: 'PitPublisher', mutationStatsFile: '**/build/reports/pitest/**/mutations.xml', minimumKillRatio: 0.0, killRatioMustImprove: false])
 }
 
 void computeVersion() {

@@ -17,13 +17,10 @@ public class ActualBuild implements Build {
 	private final BuildStatus status;
 	
 	public ActualBuild(Job job, long number, ZonedDateTime startTime, BuildStatus status) {
-		requireNonNull(job);
-		requireNonNull(startTime);
-		requireNonNull(status);
 		if (!status.isValidActualBuildStatus()) throw new IllegalArgumentException("Status not applicable for an ActualBuild.");
-		this.job = job;
+		this.job = requireNonNull(job);
 		this.number = number;
-		this.startTime = startTime;
+		this.startTime = requireNonNull(startTime);
 		this.status = status;
 	}
 

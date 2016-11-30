@@ -14,8 +14,7 @@ public class NoBuilds implements Build {
 	private final Job job;
 	
 	public NoBuilds(Job job) {
-		requireNonNull(job);
-		this.job = job;
+		this.job = requireNonNull(job);
 	}
 	
 	@Override

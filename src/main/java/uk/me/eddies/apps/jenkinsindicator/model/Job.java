@@ -21,8 +21,7 @@ public class Job {
 	private volatile Build lastBuild;
 	
 	public Job(String name) {
-		requireNonNull(name);
-		this.name = name;
+		this.name = requireNonNull(name);
 		this.lastBuild = new NoBuilds(this);
 	}
 	

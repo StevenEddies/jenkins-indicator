@@ -25,8 +25,7 @@ public class JenkinsServer {
 	private final SortedMap<String, Job> jobs;
 	
 	public JenkinsServer(String serverName) {
-		requireNonNull(serverName);
-		this.serverName = serverName;
+		this.serverName = requireNonNull(serverName);
 		this.jobs = synchronizedSortedMap(new TreeMap<>());
 	}
 	

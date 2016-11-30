@@ -1,20 +1,30 @@
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.9'
+	}
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: 'info.solidsoft.pitest'
 
-version = buildVersion
+version = project.findProperty("buildVersion") ?: "0.0-dev.0"
 group = 'uk.me.eddies'
 
 repositories {
-    jcenter()
+	jcenter()
 }
 
 dependencies {
 	compile 'org.apache.httpcomponents:httpasyncclient:4.1.1'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile 'org.hamcrest:hamcrest-all:1.3'
-    testCompile 'pl.pragmatists:JUnitParams:1.0.5'
+	testCompile 'junit:junit:4.12'
+	testCompile 'org.mockito:mockito-core:1.10.19'
+	testCompile 'org.hamcrest:hamcrest-all:1.3'
+	testCompile 'pl.pragmatists:JUnitParams:1.0.5'
 }
 
 
@@ -26,13 +36,14 @@ test {
 	filter {
 		includeTestsMatching "*Test"
 	}
+	reports.junitXml.destination = "$buildDir/reports/unit-test"
 }
 
 task integrationTest(type: Test) {
 	filter {
 		includeTestsMatching "*IT"
 	}
-	reports.junitXml.destination = "$buildDir/integration-test-results"
+	reports.junitXml.destination = "$buildDir/reports/integration-test"
 }
 
 task testJar(type: Jar) {
@@ -50,6 +61,11 @@ task setBuildProperties << {
 	} finally {
 		writer.close()
 	}
+}
+
+pitest {
+	threads = 1
+	outputFormats = ['XML', 'HTML']
 }
 
 setBuildProperties {
@@ -74,8 +90,8 @@ publishing {
 		maven {
 			url "https://jenkins.eddies.me.uk/archiva/repository/internal/"
 			credentials {
-				username archivaUsername
-				password archivaPassword
+				username project.findProperty("archivaUsername")
+				password project.findProperty("archivaPassword")
 			}
 		}
 	}

@@ -4,13 +4,12 @@ package uk.me.eddies.apps.jenkinsindicator.model;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-
-import uk.me.eddies.apps.jenkinsindicator.utility.TypedMatcher;
+import org.hamcrest.TypeSafeMatcher;
 
 /**
  * {@link Matcher} for a {@link JenkinsServer}.
  */
-public class JenkinsServerMatcher extends TypedMatcher<JenkinsServer> {
+public class JenkinsServerMatcher extends TypeSafeMatcher<JenkinsServer> {
 	
 	private final Matcher<? super String> name;
 	private final Matcher<? super Iterable<Job>> jobs;
@@ -25,7 +24,7 @@ public class JenkinsServerMatcher extends TypedMatcher<JenkinsServer> {
 	}
 	
 	@Override
-	protected boolean internalMatches(JenkinsServer item) {
+	protected boolean matchesSafely(JenkinsServer item) {
 		return name.matches(item.getServerName())
 				&& jobs.matches(item.getAllJobs());
 	}

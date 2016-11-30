@@ -6,13 +6,12 @@ import java.time.ZonedDateTime;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-
-import uk.me.eddies.apps.jenkinsindicator.utility.TypedMatcher;
+import org.hamcrest.TypeSafeMatcher;
 
 /**
  * {@link Matcher} for a {@link Build}.
  */
-public class BuildMatcher extends TypedMatcher<Build> {
+public class BuildMatcher extends TypeSafeMatcher<Build> {
 	
 	private final Matcher<? super String> jobName;
 	private final Matcher<? super Long> buildNumber;
@@ -33,7 +32,7 @@ public class BuildMatcher extends TypedMatcher<Build> {
 	}
 	
 	@Override
-	protected boolean internalMatches(Build item) {
+	protected boolean matchesSafely(Build item) {
 		return jobName.matches(item.getJob().getName())
 				&& buildNumber.matches(item.getNumber())
 				&& startTime.matches(item.getStartTime())

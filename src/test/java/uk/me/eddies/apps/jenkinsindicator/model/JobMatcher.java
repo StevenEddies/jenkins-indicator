@@ -4,13 +4,12 @@ package uk.me.eddies.apps.jenkinsindicator.model;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-
-import uk.me.eddies.apps.jenkinsindicator.utility.TypedMatcher;
+import org.hamcrest.TypeSafeMatcher;
 
 /**
  * {@link Matcher} for a {@link Job}.
  */
-public class JobMatcher extends TypedMatcher<Job> {
+public class JobMatcher extends TypeSafeMatcher<Job> {
 	
 	private final Matcher<? super String> name;
 	private final Matcher<? super Build> lastBuild;
@@ -25,7 +24,7 @@ public class JobMatcher extends TypedMatcher<Job> {
 	}
 	
 	@Override
-	protected boolean internalMatches(Job item) {
+	protected boolean matchesSafely(Job item) {
 		return name.matches(item.getName())
 				&& lastBuild.matches(item.getLastBuild());
 	}

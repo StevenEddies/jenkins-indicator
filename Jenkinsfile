@@ -9,12 +9,12 @@ node {
 	
 	stage 'Unit Test'
 	runGradle('test')
-    step([$class: 'JUnitResultArchiver', testResults: '**/build/test-results/TEST-*.xml'])
+	step([$class: 'JUnitResultArchiver', testResults: '**/build/reports/unit-test/TEST-*.xml'])
 	if (testFailures()) return
 	
 	stage 'Integration Test'
 	runGradle('integrationTest')
-	step([$class: 'JUnitResultArchiver', testResults: '**/build/integration-test-results/TEST-*.xml'])
+	step([$class: 'JUnitResultArchiver', testResults: '**/build/reports/integration-test/TEST-*.xml'])
 	if (testFailures()) return
 	
 	stage 'Assemble'
@@ -25,6 +25,10 @@ node {
 		runGradle('publish')
 		scmTag()
 	}
+	
+	stage 'Metrics'
+	runGradle('pitest')
+	step([$class: 'org.jenkinsci.plugins.pitmutation.PitPublisher', mutationStatsFile: '**/build/reports/pitest/**/mutations.xml', minimumKillRatio: 0.0, killRatioMustImprove: false])
 }
 
 void computeVersion() {
@@ -55,7 +59,7 @@ void scmTag() {
 	withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '250caf7a-0e9e-4e44-b8ba-a91544ca8f85', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
 		sh 'set +x'
 		sh "git tag -a v${version} -m \"Jenkins build published\""
-	    sh 'git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/StevenEddies/jenkins-indicator.git --tags'
+		sh 'git push https://$GIT_USERNAME:$GIT_PASSWORD@github.com/StevenEddies/jenkins-indicator.git --tags'
 	}
 }
 

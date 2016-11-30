@@ -38,16 +38,16 @@ public class ModelIT {
 	@Before
 	public void setUp() {
 		server = new JenkinsServer(SERVER_NAME);
-		updateJobWithBuild(JOB_1_NAME, 56, TIME_1, BuildStatus.STABLE);
-		updateJobWithBuild(JOB_2_NAME, 42, TIME_2, BuildStatus.UNSTABLE);
+		updateJobWithBuild(JOB_1_NAME, 56L, TIME_1, BuildStatus.STABLE);
+		updateJobWithBuild(JOB_2_NAME, 42L, TIME_2, BuildStatus.UNSTABLE);
 		updateJobNoBuild(JOB_3_NAME);
 	}
 	
 	@Test
 	public void shouldSetUpCorrectly() {
 		List<Matcher<? super Job>> jobs = Arrays.asList(
-				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), is(56), is(TIME_1), is(BuildStatus.STABLE))),
-				new JobMatcher(is(JOB_2_NAME), new BuildMatcher(is(JOB_2_NAME), is(42), is(TIME_2), is(BuildStatus.UNSTABLE))),
+				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), is(56L), is(TIME_1), is(BuildStatus.STABLE))),
+				new JobMatcher(is(JOB_2_NAME), new BuildMatcher(is(JOB_2_NAME), is(42L), is(TIME_2), is(BuildStatus.UNSTABLE))),
 				new JobMatcher(is(JOB_3_NAME), new BuildMatcher(is(JOB_3_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))));
 		assertThat(server, new JenkinsServerMatcher(is(SERVER_NAME), Matchers.<Job>contains(jobs)));
 	}

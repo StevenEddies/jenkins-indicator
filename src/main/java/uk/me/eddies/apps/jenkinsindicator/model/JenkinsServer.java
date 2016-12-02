@@ -10,7 +10,11 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.function.Function;
 import java.util.function.Supplier;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a server running Jenkins which may have multiple {@link Job}s.
@@ -19,14 +23,16 @@ import java.util.function.Supplier;
  * state at the time of the method call and are not subsequently updated.
  */
 public class JenkinsServer {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(JenkinsServer.class);
 
 	private final String serverName;
 	private final SortedMap<String, Job> jobs;
 	
 	public JenkinsServer(String serverName) {
-		requireNonNull(serverName);
-		this.serverName = serverName;
+		this.serverName = requireNonNull(serverName);
 		this.jobs = synchronizedSortedMap(new TreeMap<>());
+		LOG.debug("New server '{}'.", serverName);
 	}
 	
 	public String getServerName() {
@@ -40,7 +46,7 @@ public class JenkinsServer {
 	}
 	
 	public void updateForNewJobInformation(String jobName, Long buildNumber,
-			Supplier<Job> jobCreator, Supplier<Build> buildCreator) {
+			Supplier<Job> jobCreator, Function<Job, Build> buildCreator) {
 		requireNonNull(buildCreator);
 		synchronized (jobs) {
 			Job job = addOrGetJob(jobName, jobCreator);
@@ -55,11 +61,13 @@ public class JenkinsServer {
 			Job job = jobCreator.get();
 			if (!job.getName().equals(jobName)) throw new IllegalStateException("Wrong Job supplied.");
 			jobs.put(jobName, job);
+			LOG.debug("New job '{}' on server '{}'.", jobName, serverName);
 			return job;
 		}
 	}
 	
 	public void updateForDeletedJob(String jobName) {
 		jobs.remove(jobName);
+		LOG.debug("Job '{}' on server '{}' deleted.", jobName, serverName);
 	}
 }

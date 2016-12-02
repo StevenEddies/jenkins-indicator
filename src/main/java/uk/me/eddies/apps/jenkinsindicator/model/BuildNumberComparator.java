@@ -19,7 +19,7 @@ public class BuildNumberComparator implements Comparator<Long> {
 	public int compare(Long number1, Long number2) {
 		if (((number1 != null) && (number1 < MIN_BUILD_NUMBER))
 				|| ((number2 != null) && (number2 < MIN_BUILD_NUMBER)))
-			throw new IllegalArgumentException("Build numbers must be less than " + MIN_BUILD_NUMBER);
+			throw new IllegalArgumentException("Build numbers must not be less than " + MIN_BUILD_NUMBER);
 		
 		long numericEquivalent1 = (number1 == null) ? NO_BUILD_NUMBER : number1;
 		long numericEquivalent2 = (number2 == null) ? NO_BUILD_NUMBER : number2;

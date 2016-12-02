@@ -10,12 +10,17 @@ import static uk.me.eddies.apps.jenkinsindicator.utility.ComparatorResult.compar
 import java.util.Objects;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.me.eddies.apps.jenkinsindicator.utility.ComparatorResult;
 
 /**
  * Represents a job built on Jenkins.
  */
 public class Job {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(Job.class);
 
 	private final String name;
 	private volatile Build lastBuild;
@@ -51,6 +56,8 @@ public class Job {
 		Build build = buildCreator.apply(this);
 		if (!Objects.equals(build.getNumber(), buildNumber)) throw new IllegalStateException("Wrong Build supplied.");
 		setLastBuild(build);
+		LOG.debug("New build #{} for job '{}': time {}, status {}.",
+				buildNumber, name, build.getStartTime(), build.getStatus());
 		return true;
 	}
 }

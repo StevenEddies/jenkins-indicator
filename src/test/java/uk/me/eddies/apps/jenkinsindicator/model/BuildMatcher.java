@@ -2,7 +2,7 @@
 
 package uk.me.eddies.apps.jenkinsindicator.model;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -15,13 +15,13 @@ public class BuildMatcher extends TypeSafeMatcher<Build> {
 	
 	private final Matcher<? super String> jobName;
 	private final Matcher<? super Long> buildNumber;
-	private final Matcher<? super ZonedDateTime> startTime;
+	private final Matcher<? super Instant> startTime;
 	private final Matcher<? super BuildStatus> status;
 	
 	public BuildMatcher(
 			Matcher<? super String> jobName,
 			Matcher<? super Long> buildNumber,
-			Matcher<? super ZonedDateTime> startTime,
+			Matcher<? super Instant> startTime,
 			Matcher<? super BuildStatus> status
 	) {
 		super(Build.class);

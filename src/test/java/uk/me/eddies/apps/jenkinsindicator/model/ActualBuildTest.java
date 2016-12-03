@@ -8,9 +8,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -27,9 +24,7 @@ import junitparams.Parameters;
 public class ActualBuildTest {
 	
 	private static final long BUILD_NUMBER = 1234;
-	private static final ZonedDateTime START_TIME = ZonedDateTime.ofInstant(
-			Instant.ofEpochSecond(100000L),
-			ZoneId.ofOffset("GMT", ZoneOffset.ofHours(1)));
+	private static final Instant START_TIME = Instant.ofEpochSecond(100000L);
 	private static final BuildStatus STATUS = BuildStatus.FAILED;
 
 	@Mock private Job job;

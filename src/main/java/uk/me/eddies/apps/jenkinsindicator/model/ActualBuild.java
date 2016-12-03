@@ -4,7 +4,7 @@ package uk.me.eddies.apps.jenkinsindicator.model;
 
 import static java.util.Objects.requireNonNull;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 /**
  * Represents a single build of a {@link Job}.
@@ -13,10 +13,10 @@ public class ActualBuild implements Build {
 
 	private final Job job;
 	private final long number;
-	private final ZonedDateTime startTime;
+	private final Instant startTime;
 	private final BuildStatus status;
 	
-	public ActualBuild(Job job, long number, ZonedDateTime startTime, BuildStatus status) {
+	public ActualBuild(Job job, long number, Instant startTime, BuildStatus status) {
 		if (!status.isValidActualBuildStatus()) throw new IllegalArgumentException("Status not applicable for an ActualBuild.");
 		this.job = requireNonNull(job);
 		this.number = number;
@@ -35,7 +35,7 @@ public class ActualBuild implements Build {
 	}
 	
 	@Override
-	public ZonedDateTime getStartTime() {
+	public Instant getStartTime() {
 		return startTime;
 	}
 	

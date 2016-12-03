@@ -7,7 +7,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -23,14 +23,14 @@ public class BuildMatcherTest {
 	
 	private static final String JOB_NAME = "1234";
 	private static final Long BUILD_NUMBER = 12345L;
-	private static final ZonedDateTime START_TIME = ZonedDateTime.now();
+	private static final Instant START_TIME = Instant.now();
 	private static final BuildStatus STATUS = BuildStatus.FAILED;
 
 	@Mock private Job job;
 	@Mock private Build build;
 	@Mock private Matcher<String> jobNameMatcher;
 	@Mock private Matcher<Long> buildNumberMatcher;
-	@Mock private Matcher<ZonedDateTime> startTimeMatcher;
+	@Mock private Matcher<Instant> startTimeMatcher;
 	@Mock private Matcher<BuildStatus> statusMatcher;
 	
 	private BuildMatcher systemUnderTest;

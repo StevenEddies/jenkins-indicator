@@ -4,7 +4,7 @@ package uk.me.eddies.apps.jenkinsindicator.model;
 
 import static java.util.Objects.requireNonNull;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 /**
  * Represents the lack of a build, i.e. the state before any builds have built.
@@ -28,7 +28,7 @@ public class NoBuilds implements Build {
 	}
 
 	@Override
-	public ZonedDateTime getStartTime() {
+	public Instant getStartTime() {
 		return null;
 	}
 

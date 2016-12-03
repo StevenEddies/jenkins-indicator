@@ -8,9 +8,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -31,8 +28,8 @@ public class ModelIT {
 	private static final String JOB_2_NAME = "job2";
 	private static final String JOB_3_NAME = "job3";
 	private static final String JOB_4_NAME = "job4";
-	private static final ZonedDateTime TIME_1 = fromBstTimestamp(10L);
-	private static final ZonedDateTime TIME_2 = fromBstTimestamp(21L);
+	private static final Instant TIME_1 = Instant.ofEpochMilli(10000L);
+	private static final Instant TIME_2 = Instant.ofEpochMilli(21000L);
 
 	private JenkinsServer server;
 	
@@ -118,7 +115,7 @@ public class ModelIT {
 		server.updateForNewJobInformation(name, null, createJob(name), createNoBuild());
 	}
 	
-	private void updateJobWithBuild(String name, long number, ZonedDateTime startTime, BuildStatus status) {
+	private void updateJobWithBuild(String name, long number, Instant startTime, BuildStatus status) {
 		server.updateForNewJobInformation(name, number, createJob(name), createBuild(number, startTime, status));
 	}
 	
@@ -130,15 +127,11 @@ public class ModelIT {
 		return job -> new NoBuilds(job);
 	}
 	
-	private Function<Job, Build> createBuild(long number, ZonedDateTime startTime, BuildStatus status) {
+	private Function<Job, Build> createBuild(long number, Instant startTime, BuildStatus status) {
 		return job -> new ActualBuild(job, number, startTime, status);
 	}
 	
 	private Supplier<Job> createJob(String name) {
 		return () -> new Job(name);
-	}
-	
-	private static ZonedDateTime fromBstTimestamp(long seconds) {
-		return ZonedDateTime.ofInstant(Instant.ofEpochSecond(seconds), ZoneId.ofOffset("GMT", ZoneOffset.ofHours(1)));
 	}
 }

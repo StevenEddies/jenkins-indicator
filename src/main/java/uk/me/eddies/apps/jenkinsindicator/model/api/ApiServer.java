@@ -2,6 +2,8 @@
 
 package uk.me.eddies.apps.jenkinsindicator.model.api;
 
+import static java.util.Objects.requireNonNull;
+
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +32,8 @@ public class ApiServer implements RootApiModel {
 	}
 	
 	ApiServer(JenkinsServer model, ApiTrigger api, Function<RootApiModel, ApiJobContainer> containerFactory) {
-		this.model = model;
-		this.apiTrigger = api;
+		this.model = requireNonNull(model);
+		this.apiTrigger = requireNonNull(api);
 		this.rootJobs = containerFactory.apply(this);
 		this.allJobs = new HashMap<>();
 	}
@@ -44,7 +46,7 @@ public class ApiServer implements RootApiModel {
 	
 	@Override
 	public ApiJob getJob(URI jobUri) {
-		return allJobs.get(jobUri);
+		return allJobs.get(requireNonNull(jobUri));
 	}
 	
 	@Override

@@ -2,6 +2,8 @@
 
 package uk.me.eddies.apps.jenkinsindicator.model.api;
 
+import static java.util.Objects.requireNonNull;
+
 import java.net.URI;
 import java.time.Instant;
 import java.util.Map;
@@ -39,6 +41,8 @@ public class ApiJob {
 	}
 	
 	public void updateLastBuild(long number, Instant startTime, BuildStatus status) {
+		requireNonNull(startTime);
+		requireNonNull(status);
 		LOG.debug("Updating job '{}', build {}.", fullName, number);
 		apiModel.getModel().updateForNewJobInformation(
 				fullName,

@@ -41,10 +41,25 @@ public class ApiServerTest {
 		systemUnderTest = new ApiServer(model, apiTrigger, m -> rootJobContainer);
 	}
 	
+	@Test(expected=NullPointerException.class)
+	public void shouldFailToConstructWithoutModel() {
+		systemUnderTest = new ApiServer(null, apiTrigger);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void shouldFailToConstructWithoutApiTrigger() {
+		systemUnderTest = new ApiServer(model, null);
+	}
+	
 	@Test
 	public void shouldDelegateRootJobsUpdate() {
 		systemUnderTest.updateRootJobs(rootJobs);
 		verify(rootJobContainer).updateJobs(rootJobs);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void shouldFailToUpdateRootJobsWithoutJobsCollection() {
+		systemUnderTest.updateRootJobs(null);
 	}
 	
 	@Test
@@ -64,6 +79,11 @@ public class ApiServerTest {
 		
 		assertThat(systemUnderTest.getJob(URI_1), sameInstance(job1));
 		assertThat(systemUnderTest.getJob(URI_2), sameInstance(job2));
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void shouldFailToGetJobWithoutUri() {
+		systemUnderTest.getJob(null);
 	}
 	
 	@Test

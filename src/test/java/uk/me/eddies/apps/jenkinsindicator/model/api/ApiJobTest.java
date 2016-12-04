@@ -77,6 +77,16 @@ public class ApiJobTest {
 				new BuildMatcher(equalTo(JOB_NAME), equalTo(BUILD_NUMBER), equalTo(BUILD_START_TIME), equalTo(BUILD_STATUS)));
 	}
 	
+	@Test(expected=NullPointerException.class)
+	public void shouldFailToUpdateHavingBuiltWithoutStartTime() {
+		systemUnderTest.updateLastBuild(BUILD_NUMBER, null, BUILD_STATUS);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void shouldFailToUpdateHavingBuiltWithoutStatus() {
+		systemUnderTest.updateLastBuild(BUILD_NUMBER, BUILD_START_TIME, null);
+	}
+	
 	@Test
 	public void shouldUpdateHavingNotBuilt() {
 		systemUnderTest.updateNotBuilt();
@@ -92,6 +102,11 @@ public class ApiJobTest {
 	public void shouldUpdateChildren() {
 		systemUnderTest.updateChildren(childUpdates);
 		verify(childContainer).updateJobs(childUpdates);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void shouldFailToUpdateChildrenWithoutChildrenCollection() {
+		systemUnderTest.updateChildren(null);
 	}
 	
 	@Test

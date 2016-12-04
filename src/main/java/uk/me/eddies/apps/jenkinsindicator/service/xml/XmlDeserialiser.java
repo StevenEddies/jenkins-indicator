@@ -15,9 +15,9 @@ import javax.xml.bind.Unmarshaller;
  */
 public class XmlDeserialiser<T> {
 
-	private JAXBContext context;
-	private Class<T> objectType;
-	private ThreadLocal<Unmarshaller> unmarshaller;
+	private final JAXBContext context;
+	private final Class<T> objectType;
+	private final ThreadLocal<Unmarshaller> unmarshaller;
 	
 	public XmlDeserialiser(JAXBContext context, Class<T> objectType) {
 		this.context = context;

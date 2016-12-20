@@ -43,6 +43,18 @@ public class XmlApiDeserialisationTest {
 		assertThat(firstJob.getUrl(), equalTo(URI.create("https://jenkins.eddies.me.uk/job/cloud-storage/")));
 	}
 	
+	@Test(expected=ApiResolutionException.class)
+	public void shouldFailToDeserialiseFromServerApiWithMissingJobUrl() throws IOException, JAXBException, ApiResolutionException {
+		ServerRootElement root = deserialiseFile("bad_server_example_no_url.xml", ServerRootElement.class);
+		root.getJobs().iterator().next().getUrl();
+	}
+	
+	@Test(expected=ApiResolutionException.class)
+	public void shouldFailToDeserialiseFromServerApiWithIncorrectJobUrl() throws IOException, JAXBException, ApiResolutionException {
+		ServerRootElement root = deserialiseFile("bad_server_example_bad_url.xml", ServerRootElement.class);
+		root.getJobs().iterator().next().getUrl();
+	}
+	
 	@Test
 	public void shouldDeserialiseFromValidParentJobApi() throws IOException, JAXBException, ApiResolutionException {
 		JobRootElement root = deserialiseFile("parent_job_example.xml", JobRootElement.class);
@@ -64,6 +76,36 @@ public class XmlApiDeserialisationTest {
 		assertThat(root.getBuild().getResult(), equalTo(BuildStatus.SUCCESS));
 		assertThat(root.getBuild().getTimestamp(), equalTo(Instant.ofEpochMilli(1480701040698L)));
 		assertThat(root.getJobs(), empty());
+	}
+	
+	@Test(expected=ApiResolutionException.class)
+	public void shouldFailToDeserialiseFromChildJobApiWithMissingBuildResult() throws IOException, JAXBException, ApiResolutionException {
+		JobRootElement root = deserialiseFile("bad_child_job_example_no_result.xml", JobRootElement.class);
+		root.getBuild().getResult();
+	}
+	
+	@Test(expected=ApiResolutionException.class)
+	public void shouldFailToDeserialiseFromChildJobApiWithInvalidBuildResult() throws IOException, JAXBException, ApiResolutionException {
+		JobRootElement root = deserialiseFile("bad_child_job_example_bad_result.xml", JobRootElement.class);
+		root.getBuild().getResult();
+	}
+	
+	@Test(expected=ApiResolutionException.class)
+	public void shouldFailToDeserialiseFromChildJobApiWithMissingBuildTimestamp() throws IOException, JAXBException, ApiResolutionException {
+		JobRootElement root = deserialiseFile("bad_child_job_example_no_timestamp.xml", JobRootElement.class);
+		root.getBuild().getTimestamp();
+	}
+	
+	@Test(expected=ApiResolutionException.class)
+	public void shouldFailToDeserialiseFromChildJobApiWithMissingUrl() throws IOException, JAXBException, ApiResolutionException {
+		JobRootElement root = deserialiseFile("bad_child_job_example_no_own_url.xml", JobRootElement.class);
+		root.getUrl();
+	}
+	
+	@Test(expected=ApiResolutionException.class)
+	public void shouldFailToDeserialiseFromChildJobApiWithInvalidUrl() throws IOException, JAXBException, ApiResolutionException {
+		JobRootElement root = deserialiseFile("bad_child_job_example_bad_own_url.xml", JobRootElement.class);
+		root.getUrl();
 	}
 
 	private <T extends XmlResponse> T deserialiseFile(String fileLocation, Class<T> type)

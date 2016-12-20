@@ -1,0 +1,9 @@
+<jobRoot>
+	<name>dev0.1</name>
+	<url>https://jenkins.eddies.me.uk/job/jenkins-indicator/job/dev0.1/</url>
+	<lastCompletedBuild _class="org.jenkinsci.plugins.workflow.job.WorkflowRun">
+		<number>19</number>
+		<result>SUCCESSFUL</result>
+		<timestamp>1480701040698</timestamp>
+	</lastCompletedBuild>
+</jobRoot>

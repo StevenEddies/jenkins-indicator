@@ -1,0 +1,25 @@
+<hudson _class='hudson.model.Hudson'>
+	<job _class='org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject'>
+		<name>cloud-storage</name>
+	</job>
+	<job _class='org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject'>
+		<name>GradleTestProject</name>
+		<url>https://jenkins.eddies.me.uk/job/GradleTestProject/</url>
+	</job>
+	<job _class='org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject'>
+		<name>jenkins-indicator</name>
+		<url>https://jenkins.eddies.me.uk/job/jenkins-indicator/</url>
+	</job>
+	<job _class='com.github.mjdetullio.jenkins.plugins.multibranch.MavenMultiBranchProject'>
+		<name>MavenTestProject</name>
+		<url>https://jenkins.eddies.me.uk/job/MavenTestProject/</url>
+	</job>
+	<job _class='com.cloudbees.hudson.plugins.folder.Folder'>
+		<name>owl-ms</name>
+		<url>https://jenkins.eddies.me.uk/job/owl-ms/</url>
+	</job>
+	<job _class='org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject'>
+		<name>wesu-website</name>
+		<url>https://jenkins.eddies.me.uk/job/wesu-website/</url>
+	</job>
+</hudson>

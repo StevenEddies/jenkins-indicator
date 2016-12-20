@@ -25,7 +25,7 @@ public class ActualBuildTest {
 	
 	private static final long BUILD_NUMBER = 1234;
 	private static final Instant START_TIME = Instant.ofEpochSecond(100000L);
-	private static final BuildStatus STATUS = BuildStatus.FAILED;
+	private static final BuildStatus STATUS = BuildStatus.FAILURE;
 
 	@Mock private Job job;
 	
@@ -54,7 +54,7 @@ public class ActualBuildTest {
 	
 	@Test
 	public void shouldStoreStatus() {
-		assertThat(systemUnderTest.getStatus(), is(BuildStatus.FAILED));
+		assertThat(systemUnderTest.getStatus(), is(BuildStatus.FAILURE));
 	}
 	
 	@Test(expected=NullPointerException.class)

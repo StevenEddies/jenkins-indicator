@@ -24,7 +24,7 @@ public class BuildMatcherTest {
 	private static final String JOB_NAME = "1234";
 	private static final Long BUILD_NUMBER = 12345L;
 	private static final Instant START_TIME = Instant.now();
-	private static final BuildStatus STATUS = BuildStatus.FAILED;
+	private static final BuildStatus STATUS = BuildStatus.FAILURE;
 
 	@Mock private Job job;
 	@Mock private Build build;

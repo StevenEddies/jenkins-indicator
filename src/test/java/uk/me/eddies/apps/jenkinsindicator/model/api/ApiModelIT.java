@@ -101,13 +101,13 @@ public class ApiModelIT {
 		apiModel.getJob(URI_1).updateNotBuilt();
 		apiModel.getJob(URI_2).updateNotBuilt();
 		apiModel.getJob(URI_2).updateChildren(job2Children);
-		apiModel.getJob(URI_3).updateLastBuild(1L, TIME_1, BuildStatus.STABLE);
+		apiModel.getJob(URI_3).updateLastBuild(1L, TIME_1, BuildStatus.SUCCESS);
 		apiModel.getJob(URI_4).updateLastBuild(2L, TIME_2, BuildStatus.UNSTABLE);
 		
 		List<Matcher<? super Job>> jobs = Arrays.asList(
 				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))),
 				new JobMatcher(is(JOB_2_NAME), new BuildMatcher(is(JOB_2_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))),
-				new JobMatcher(is(JOB_3_NAME), new BuildMatcher(is(JOB_3_NAME), is(1L), is(TIME_1), is(BuildStatus.STABLE))),
+				new JobMatcher(is(JOB_3_NAME), new BuildMatcher(is(JOB_3_NAME), is(1L), is(TIME_1), is(BuildStatus.SUCCESS))),
 				new JobMatcher(is(JOB_4_NAME), new BuildMatcher(is(JOB_4_NAME), is(2L), is(TIME_2), is(BuildStatus.UNSTABLE))));
 		assertThat(model, new JenkinsServerMatcher(is(SERVER_NAME), containsInAnyOrder(jobs)));
 	}
@@ -162,7 +162,7 @@ public class ApiModelIT {
 		List<Matcher<? super Job>> jobs = Arrays.asList(
 				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))),
 				new JobMatcher(is(JOB_2_NAME), new BuildMatcher(is(JOB_2_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))),
-				new JobMatcher(is(JOB_3_NAME), new BuildMatcher(is(JOB_3_NAME), is(1L), is(TIME_1), is(BuildStatus.STABLE))),
+				new JobMatcher(is(JOB_3_NAME), new BuildMatcher(is(JOB_3_NAME), is(1L), is(TIME_1), is(BuildStatus.SUCCESS))),
 				new JobMatcher(is(JOB_4_NAME), new BuildMatcher(is(JOB_4_NAME), is(2L), is(TIME_2), is(BuildStatus.UNSTABLE))),
 				new JobMatcher(is(JOB_5_NAME), new BuildMatcher(is(JOB_5_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))));
 		assertThat(model, new JenkinsServerMatcher(is(SERVER_NAME), containsInAnyOrder(jobs)));
@@ -173,12 +173,12 @@ public class ApiModelIT {
 		shouldUpdateForInitialBuildState();
 		reset(trigger);
 		
-		apiModel.getJob(URI_2).updateLastBuild(10L, TIME_1, BuildStatus.FAILED);
+		apiModel.getJob(URI_2).updateLastBuild(10L, TIME_1, BuildStatus.FAILURE);
 		
 		List<Matcher<? super Job>> jobs = Arrays.asList(
 				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))),
-				new JobMatcher(is(JOB_2_NAME), new BuildMatcher(is(JOB_2_NAME), is(10L), is(TIME_1), is(BuildStatus.FAILED))),
-				new JobMatcher(is(JOB_3_NAME), new BuildMatcher(is(JOB_3_NAME), is(1L), is(TIME_1), is(BuildStatus.STABLE))),
+				new JobMatcher(is(JOB_2_NAME), new BuildMatcher(is(JOB_2_NAME), is(10L), is(TIME_1), is(BuildStatus.FAILURE))),
+				new JobMatcher(is(JOB_3_NAME), new BuildMatcher(is(JOB_3_NAME), is(1L), is(TIME_1), is(BuildStatus.SUCCESS))),
 				new JobMatcher(is(JOB_4_NAME), new BuildMatcher(is(JOB_4_NAME), is(2L), is(TIME_2), is(BuildStatus.UNSTABLE))));
 		assertThat(model, new JenkinsServerMatcher(is(SERVER_NAME), containsInAnyOrder(jobs)));
 	}

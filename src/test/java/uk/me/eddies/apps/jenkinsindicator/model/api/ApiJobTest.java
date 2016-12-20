@@ -36,7 +36,7 @@ public class ApiJobTest {
 	private static final String JOB_NAME = "jenkins_indicator";
 	private static final long BUILD_NUMBER = 12L;
 	private static final Instant BUILD_START_TIME = Instant.now();
-	private static final BuildStatus BUILD_STATUS = BuildStatus.STABLE;
+	private static final BuildStatus BUILD_STATUS = BuildStatus.SUCCESS;
 	
 	@Mock private RootApiModel apiModel;
 	@Mock private ApiJobContainer childContainer;

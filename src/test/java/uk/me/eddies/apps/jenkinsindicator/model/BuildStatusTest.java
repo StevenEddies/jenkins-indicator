@@ -16,8 +16,8 @@ public class BuildStatusTest {
 	
 	@Test
 	public void shouldBeValidActualBuildStatus() {
-		assertThat(BuildStatus.FAILED.isValidActualBuildStatus(), is(true));
-		assertThat(BuildStatus.STABLE.isValidActualBuildStatus(), is(true));
+		assertThat(BuildStatus.FAILURE.isValidActualBuildStatus(), is(true));
+		assertThat(BuildStatus.SUCCESS.isValidActualBuildStatus(), is(true));
 		assertThat(BuildStatus.UNSTABLE.isValidActualBuildStatus(), is(true));
 	}
 }

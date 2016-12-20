@@ -36,7 +36,7 @@ public class ModelIT {
 	@Before
 	public void setUp() {
 		server = new JenkinsServer(SERVER_NAME);
-		updateJobWithBuild(JOB_1_NAME, 56L, TIME_1, BuildStatus.STABLE);
+		updateJobWithBuild(JOB_1_NAME, 56L, TIME_1, BuildStatus.SUCCESS);
 		updateJobWithBuild(JOB_2_NAME, 42L, TIME_2, BuildStatus.UNSTABLE);
 		updateJobNoBuild(JOB_3_NAME);
 	}
@@ -44,7 +44,7 @@ public class ModelIT {
 	@Test
 	public void shouldSetUpCorrectly() {
 		List<Matcher<? super Job>> jobs = Arrays.asList(
-				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), is(56L), is(TIME_1), is(BuildStatus.STABLE))),
+				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), is(56L), is(TIME_1), is(BuildStatus.SUCCESS))),
 				new JobMatcher(is(JOB_2_NAME), new BuildMatcher(is(JOB_2_NAME), is(42L), is(TIME_2), is(BuildStatus.UNSTABLE))),
 				new JobMatcher(is(JOB_3_NAME), new BuildMatcher(is(JOB_3_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))));
 		assertThat(server, new JenkinsServerMatcher(is(SERVER_NAME), Matchers.<Job>contains(jobs)));
@@ -55,7 +55,7 @@ public class ModelIT {
 		updateJobNoBuild(JOB_4_NAME);
 		
 		List<Matcher<? super Job>> jobs = Arrays.asList(
-				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), is(56L), is(TIME_1), is(BuildStatus.STABLE))),
+				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), is(56L), is(TIME_1), is(BuildStatus.SUCCESS))),
 				new JobMatcher(is(JOB_2_NAME), new BuildMatcher(is(JOB_2_NAME), is(42L), is(TIME_2), is(BuildStatus.UNSTABLE))),
 				new JobMatcher(is(JOB_3_NAME), new BuildMatcher(is(JOB_3_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))),
 				new JobMatcher(is(JOB_4_NAME), new BuildMatcher(is(JOB_4_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))));
@@ -64,13 +64,13 @@ public class ModelIT {
 	
 	@Test
 	public void shouldAddNewBuiltJob() {
-		updateJobWithBuild(JOB_4_NAME, 2L, TIME_2, BuildStatus.FAILED);
+		updateJobWithBuild(JOB_4_NAME, 2L, TIME_2, BuildStatus.FAILURE);
 		
 		List<Matcher<? super Job>> jobs = Arrays.asList(
-				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), is(56L), is(TIME_1), is(BuildStatus.STABLE))),
+				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), is(56L), is(TIME_1), is(BuildStatus.SUCCESS))),
 				new JobMatcher(is(JOB_2_NAME), new BuildMatcher(is(JOB_2_NAME), is(42L), is(TIME_2), is(BuildStatus.UNSTABLE))),
 				new JobMatcher(is(JOB_3_NAME), new BuildMatcher(is(JOB_3_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))),
-				new JobMatcher(is(JOB_4_NAME), new BuildMatcher(is(JOB_4_NAME), is(2L), is(TIME_2), is(BuildStatus.FAILED))));
+				new JobMatcher(is(JOB_4_NAME), new BuildMatcher(is(JOB_4_NAME), is(2L), is(TIME_2), is(BuildStatus.FAILURE))));
 		assertThat(server, new JenkinsServerMatcher(is(SERVER_NAME), Matchers.<Job>contains(jobs)));
 	}
 	
@@ -79,7 +79,7 @@ public class ModelIT {
 		updateJobDeleted(JOB_2_NAME);
 		
 		List<Matcher<? super Job>> jobs = Arrays.asList(
-				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), is(56L), is(TIME_1), is(BuildStatus.STABLE))),
+				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), is(56L), is(TIME_1), is(BuildStatus.SUCCESS))),
 				new JobMatcher(is(JOB_3_NAME), new BuildMatcher(is(JOB_3_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))));
 		assertThat(server, new JenkinsServerMatcher(is(SERVER_NAME), Matchers.<Job>contains(jobs)));
 	}
@@ -94,7 +94,7 @@ public class ModelIT {
 		}
 		
 		List<Matcher<? super Job>> jobs = Arrays.asList(
-				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), is(56L), is(TIME_1), is(BuildStatus.STABLE))),
+				new JobMatcher(is(JOB_1_NAME), new BuildMatcher(is(JOB_1_NAME), is(56L), is(TIME_1), is(BuildStatus.SUCCESS))),
 				new JobMatcher(is(JOB_2_NAME), new BuildMatcher(is(JOB_2_NAME), is(42L), is(TIME_2), is(BuildStatus.UNSTABLE))),
 				new JobMatcher(is(JOB_3_NAME), new BuildMatcher(is(JOB_3_NAME), nullValue(), nullValue(), is(BuildStatus.NOT_BUILT))));
 		assertThat(server, new JenkinsServerMatcher(is(SERVER_NAME), Matchers.<Job>contains(jobs)));

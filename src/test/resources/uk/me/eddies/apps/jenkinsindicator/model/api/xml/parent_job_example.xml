@@ -1,0 +1,12 @@
+<jobRoot>
+	<name>jenkins-indicator</name>
+	<url>https://jenkins.eddies.me.uk/job/jenkins-indicator/</url>
+	<job _class="org.jenkinsci.plugins.workflow.job.WorkflowJob">
+		<name>dev0.1</name>
+		<url>https://jenkins.eddies.me.uk/job/jenkins-indicator/job/dev0.1/</url>
+	</job>
+	<job _class="org.jenkinsci.plugins.workflow.job.WorkflowJob">
+		<name>iss3</name>
+		<url>https://jenkins.eddies.me.uk/job/jenkins-indicator/job/iss3/</url>
+	</job>
+</jobRoot>
